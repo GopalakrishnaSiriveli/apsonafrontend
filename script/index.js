@@ -46,7 +46,7 @@ async function fetchNotesByUser() {
             throw new Error('Token not found in localStorage');
         }
 
-        const response = await fetch('http://localhost:8000/notes/api/user/note', {
+        const response = await fetch('https://apsonanotes.onrender.com/notes/api/user/note', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -124,12 +124,6 @@ function showMenu(elem) {
 }
 
 
-
-
-
-
-
-
 async function deleteNote(noteId) {
     console.log("dlete call");
     try {
@@ -137,7 +131,7 @@ async function deleteNote(noteId) {
         const confirmDel = confirm("Are you sure you want to delete this note?");
         if (!confirmDel) return;
 
-        const response = await fetch(`http://localhost:8000/notes/deletenotes/${noteId}`, {
+        const response = await fetch(`https://apsonanotes.onrender.com/notes/deletenotes/${noteId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -179,7 +173,7 @@ async function updateNotess(noteId, title, filterDesc) {
         const token = localStorage.getItem('token');
 
         // Send PATCH request to update note on the backend
-        const response = await fetch(`http://localhost:8000/notes/${noteId}`, {
+        const response = await fetch(`https://apsonanotes.onrender.com/notes/${noteId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -248,7 +242,7 @@ async function updateNoteOnServer() {
 
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`http://localhost:8000/notes/${updateId}`, {
+        const response = await fetch(`https://apsonanotes.onrender.com/notes/${updateId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -325,7 +319,7 @@ addBtn.addEventListener('click', async (e) => {
 
         const token = localStorage.getItem('token');
 
-        const response = await fetch('http://localhost:8000/notes/add', {
+        const response = await fetch('https://apsonanotes.onrender.com/notes/add', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -377,3 +371,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log(formData);
     });
 });
+
+
