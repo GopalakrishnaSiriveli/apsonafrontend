@@ -1,11 +1,113 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Archived</title>
 </head>
 <body>
     <h1>Hello</h1>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Note</title>
+    <style>
+        /* CSS for pop-up container */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hidden update pop-up container -->
+    <div class="popup-container" id="updatePopup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeUpdatePopup()">&times;</span>
+            <h2>Update Note</h2>
+            <label for="updateTitle">Title:</label>
+            <input type="text" id="updateTitle"><br>
+            <label for="updateDesc">Description:</label>
+            <textarea id="updateDesc"></textarea><br>
+            <button onclick="updateNoteOnServer()">Update</button>
+        </div>
+    </div>
+
+    <!-- Button to open update pop-up container -->
+    <button onclick="openUpdatePopup()">Update</button>
+
+    <script>
+        // Function to open the update pop-up container
+        function openUpdatePopup() {
+            const updatePopup = document.getElementById('updatePopup');
+            updatePopup.style.display = 'block';
+            // Populate form fields with existing note data
+            const title = 'Existing Title'; // Example: Replace with actual existing title
+            const desc = 'Existing Description'; // Example: Replace with actual existing description
+            document.getElementById('updateTitle').value = title;
+            document.getElementById('updateDesc').value = desc;
+        }
+
+        // Function to close the update pop-up container
+        function closeUpdatePopup() {
+            const updatePopup = document.getElementById('updatePopup');
+            updatePopup.style.display = 'none';
+        }
+
+        // Function to update note on the server
+        async function updateNoteOnServer() {
+            const title = document.getElementById('updateTitle').value.trim();
+            const desc = document.getElementById('updateDesc').value.trim();
+
+            // Validate required fields
+            if (!title) {
+                alert('Please enter a title.');
+                return;
+            }
+
+            // Prepare updated note data
+            const updatedNote = {
+                title: title,
+                content: desc
+            };
+
+            // Simulate API request or actual API request
+            console.log('Updated note data:', updatedNote);
+            // Call your API to update the note with updatedNote data
+            // Example: const response = await fetch('your_api_endpoint', { method: 'PATCH', body: JSON.stringify(updatedNote) });
+        }
+    </script>
+</body>
+
 </html>

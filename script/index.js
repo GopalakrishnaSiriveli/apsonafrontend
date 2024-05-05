@@ -77,20 +77,60 @@ async function fetchNotesByUser() {
 }
 
 
+// function showNotes() {
+//     if(!notes) return;
+//     document.querySelectorAll(".note").forEach(li => li.remove());
+//     notes.forEach((note, id) => {
+//         let filterDesc = note.content;
+//         // let cid = '663469f9105b21d513b7bbb7';
+//         // let date = createdAtDate.toISOString().split('T')[0];
+//         let date = extractDateFromCreatedAt(note.createdAt);
+//         let label = note.label;
+//         let liTag = `<li class="note" style="background-color:${note.color}">
+//                         <div class="details">
+//                             <p>${note.title}</p>
+//                             <span>${filterDesc}</span>
+//                         </div>
+//                         <div class="bottom-content">
+//                             <span>${date}</span>
+//                             <span>${note.tags}</span>
+//                             <div class="settings">
+//                                 <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+//                                 <ul class="menu">
+//                                     <li onclick="updateNote('${note._id}', '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
+//                                     <li onclick="deleteNote('${note._id}')"><i class="uil uil-trash"></i>Delete</li>
+//                                     <li onclick="archiveNote('${note._id}')"><i class="uil uil-archive"></i>Archive</li>
+//                                     </ul>
+//                             </div>
+//                         </div>
+//                     </li>`;
+//          console.log('show notes');           
+//         addBox.insertAdjacentHTML("afterend", liTag);
+//     });
+// }
+
 function showNotes() {
-    if(!notes) return;
+    if (!notes) return;
+
+    // Clear existing notes displayed in the UI
     document.querySelectorAll(".note").forEach(li => li.remove());
-    notes.forEach((note, id) => {
+    
+
+    // Filter notes based on archived status (false for non-archived, true for archived)
+    const nonArchivedNotes = notes.filter(note => !note.archived);
+
+    nonArchivedNotes.forEach((note, id) => {
+        console.log("note.archived");
         let filterDesc = note.content;
-        // let cid = '663469f9105b21d513b7bbb7';
-        // let date = createdAtDate.toISOString().split('T')[0];
         let date = extractDateFromCreatedAt(note.createdAt);
-        let label = note.label;
+
+        // Create HTML template for each note
         let liTag = `<li class="note" style="background-color:${note.color}">
                         <div class="details">
                             <p>${note.title}</p>
                             <span>${filterDesc}</span>
                         </div>
+                        
                         <div class="bottom-content">
                             <span>${date}</span>
                             <span>${note.tags}</span>
@@ -100,14 +140,54 @@ function showNotes() {
                                     <li onclick="updateNote('${note._id}', '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
                                     <li onclick="deleteNote('${note._id}')"><i class="uil uil-trash"></i>Delete</li>
                                     <li onclick="archiveNote('${note._id}')"><i class="uil uil-archive"></i>Archive</li>
-                                    </ul>
+                                </ul>
+                                
                             </div>
+                    
                         </div>
                     </li>`;
-         console.log('show notes');           
+
+        // Append the note HTML to the DOM
         addBox.insertAdjacentHTML("afterend", liTag);
     });
+
+    console.log('Notes displayed:', nonArchivedNotes);
 }
+
+
+
+//
+async function archiveNote(noteId) {
+    try {
+        const token = localStorage.getItem('token');
+        const confirmArchive = confirm("Are you sure you want to archive this note?");
+        if (!confirmArchive) return;
+        const response = await fetch(`https://apsonanotes.onrender.com/notes/${noteId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ archived: true }) // Set archived to true for the specified note
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Failed to archive note: ${errorData.message}`);
+        }
+      // Optionally, you can redirect to the archived page after successful archive
+        window.location.href = './Archived.html';
+
+    } catch (error) {
+        console.error('Error archiving note:', error.message);
+        // Handle error (e.g., show error message to user)
+        alert('Failed to archive note. Please try again.');
+    }
+}
+
+
+
+
 showNotes();
 // Function to extract date part from createdAt string
 function extractDateFromCreatedAt(createdAt) {
@@ -169,47 +249,47 @@ async function deleteNote(noteId) {
 }
 
 // Function to update notes
-async function updateNotess(noteId, title, filterDesc) {
-    console.log("up call")
-    try {
-        // Prepare updated note data
-        const updatedNote = {
-            title: title,
-            content: filterDesc // Assuming 'filterDesc' is the updated description
-        };
+// async function updateNotess(noteId, title, filterDesc) {
+//     console.log("up call")
+//     try {
+//         // Prepare updated note data
+//         const updatedNote = {
+//             title: title,
+//             content: filterDesc // Assuming 'filterDesc' is the updated description
+//         };
 
 
-        // Get JWT token from localStorage (assuming you have authentication implemented)
-        const token = localStorage.getItem('token');
+//         // Get JWT token from localStorage (assuming you have authentication implemented)
+//         const token = localStorage.getItem('token');
 
-        // Send PATCH request to update note on the backend
-        const response = await fetch(`https://apsonanotes.onrender.com/notes/${noteId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedNote) // Convert JS object to JSON string
-        });
-        console.log(response);
+//         // Send PATCH request to update note on the backend
+//         const response = await fetch(`https://apsonanotes.onrender.com/notes/${noteId}`, {
+//             method: 'PATCH',
+//             headers: {
+//                 'Authorization': `Bearer ${token}`,
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(updatedNote) // Convert JS object to JSON string
+//         });
+//         console.log(response);
 
-        // Check if the request was successful
-        if (!response.ok) {
-            throw new Error('Failed to update note');
-        }
+//         // Check if the request was successful
+//         if (!response.ok) {
+//             throw new Error('Failed to update note');
+//         }
 
-        // Note updated successfully
-        const updatedNoteData = await response.json();
-        console.log('Note updated successfully:', updatedNoteData);
+//         // Note updated successfully
+//         const updatedNoteData = await response.json();
+//         console.log('Note updated successfully:', updatedNoteData);
 
-        // Optionally, you can handle the updated note data here (e.g., update UI)
+//         // Optionally, you can handle the updated note data here (e.g., update UI)
 
-    } catch (error) {
-        console.error('Error updating note:', error);
-        // Handle error (e.g., show error message to user)
-        alert('Failed to update note. Please try again.');
-    }
-}
+//     } catch (error) {
+//         console.error('Error updating note:', error);
+//         // Handle error (e.g., show error message to user)
+//         alert('Failed to update note. Please try again.');
+//     }
+// }
 
 
 
@@ -232,53 +312,87 @@ function updateNote(noteId, title, filterDesc) {
     addBox.click(); // Open the popup box for editing
 }
 
+
+
+// function openUpdatePopup() {
+//     const updatePopup = document.getElementById('updatePopup');
+//     updatePopup.style.display = 'block';
+//     // Populate form fields with existing note data
+//     const title = 'Existing Title'; // Example: Replace with actual existing title
+//     const desc = 'Existing Description'; // Example: Replace with actual existing description
+//     document.getElementById('updateTitle').value = title;
+//     document.getElementById('updateDesc').value = desc;
+// }
+
+// async function updateNoteOnServer() {
+//     const title = document.getElementById('updateTitle').value.trim();
+//     const desc = document.getElementById('updateDesc').value.trim();
+
+//     // Validate required fields
+//     if (!title) {
+//         alert('Please enter a title.');
+//         return;
+//     }
+
+//     // Prepare updated note data
+//     const updatedNote = {
+//         title: title,
+//         content: desc
+//     };
+
+//     // Simulate API request or actual API request
+//     console.log('Updated note data:', updatedNote);
+//     // Call your API to update the note with updatedNote data
+//     // Example: const response = await fetch('your_api_endpoint', { method: 'PATCH', body: JSON.stringify(updatedNote) });
+// }
+
 // Function to update note on the server
-async function updateNoteOnServer() {
-    try {
-        const title = titleTag.value.trim();
-        const content = descTag.value.trim();
+// async function updateNoteOnServer() {
+//     try {
+//         const title = titleTag.value.trim();
+//         const content = descTag.value.trim();
 
-        // Validate required fields
-        if (!title) {
-            alert('Please enter a title.');
-            return;
-        }
+//         // Validate required fields
+//         if (!title) {
+//             alert('Please enter a title.');
+//             return;
+//         }
 
-        // Prepare updated note data
-        const updatedNote = {
-            title: title,
-            content: content
-        };
+//         // Prepare updated note data
+//         const updatedNote = {
+//             title: title,
+//             content: content
+//         };
 
-        const token = localStorage.getItem('token');
+//         const token = localStorage.getItem('token');
 
-        const response = await fetch(`https://apsonanotes.onrender.com/notes/${updateId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedNote)
-        });
+//         const response = await fetch(`https://apsonanotes.onrender.com/notes/${updateId}`, {
+//             method: 'PATCH',
+//             headers: {
+//                 'Authorization': `Bearer ${token}`,
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(updatedNote)
+//         });
 
-        if (!response.ok) {
-            throw new Error('Failed to update note');
-        }
+//         if (!response.ok) {
+//             throw new Error('Failed to update note');
+//         }
 
-        const updatedNoteData = await response.json();
-        console.log('Note updated successfully:', updatedNoteData);
+//         const updatedNoteData = await response.json();
+//         console.log('Note updated successfully:', updatedNoteData);
 
-        // Optionally, update UI or perform other actions upon successful update
-        showNotes(); // Refresh the displayed notes after update
+//         // Optionally, update UI or perform other actions upon successful update
+//         showNotes(); // Refresh the displayed notes after update
 
-        // Close the popup box or perform other UI changes
-        closeIcon.click(); // Assuming closeIcon is defined and clickable
+//         // Close the popup box or perform other UI changes
+//         closeIcon.click(); // Assuming closeIcon is defined and clickable
 
-    } catch (error) {
-        console.error('Error updating note:', error);
-        alert('Failed to update note. Please try again.');
-    }
-}
+//     } catch (error) {
+//         console.error('Error updating note:', error);
+//         alert('Failed to update note. Please try again.');
+//     }
+// }
 
 // Event listener for the update button click
 addBtn.addEventListener('click', async (e) => {

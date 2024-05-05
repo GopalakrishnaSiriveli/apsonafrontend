@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Registration Form</title>
+    <title> Registration Form</title>
     <link rel="stylesheet" href="./style/styles.css">
 </head>
 
@@ -12,7 +12,7 @@
     <form id="signupForm">
         <div class="container">
             <h1>Sign Up</h1>
-            <p>Please fill in this form to create an account.</p>
+            <p>Please fill this form to create an account.</p>
 
             <label for="username"><b>Username</b></label>
             <input type="text" id="username" placeholder="Enter Username" required>
@@ -20,11 +20,16 @@
             <label for="password"><b>Password</b></label>
             <input type="password" id="password" placeholder="Enter Password" required>
 
-            <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+            <!-- <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p> -->
 
+            <!-- <div class="clearfix">
+                <button type="submit" class="btn">Sign Up</button>
+                <button type="login" class="btn">For Login</button>
+            </div> -->
             <div class="clearfix">
                 <button type="submit" class="btn">Sign Up</button>
-                <button type="loginButton" class="btn">For Login</button>
+                <!-- Corrected id to match the JavaScript code -->
+                <button type="button" id="loginButton" class="btn">For Login</button>
             </div>
         </div>
     </form>
@@ -35,7 +40,6 @@
         // Wait for the DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function () {
             // Find the button element by its id
-            console.log("log");
             const loginButton = document.getElementById('loginButton');
 
             // Add a click event listener to the button
