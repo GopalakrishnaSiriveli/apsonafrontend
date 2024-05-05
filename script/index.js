@@ -8,12 +8,13 @@ addBtn = popupBox.querySelector("button");
 
 const colorInput = document.getElementById('noteColor');
 const labelSelect = document.getElementById('noteLabel');
+const tagSelect = document.getElementById('noteTags');
 
-// Get the selected color value
-const noteColor = colorInput.value;
-
-// Get the selected label value
-const noteLabel = labelSelect.value;
+// // Get the selected color value
+// const noteColor = colorInput.value;
+// const noteTags = tagSelect.value;
+// // Get the selected label value
+// const noteLabel = labelSelect.value;
 
 const months = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"];
@@ -43,7 +44,7 @@ closeIcon.addEventListener("click", () => {
     localStorage.removeItem('token');
 
     // Redirect the user to the login page
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 
@@ -92,14 +93,14 @@ function showNotes() {
                         </div>
                         <div class="bottom-content">
                             <span>${date}</span>
-                           
-                            <span>${note.labels}</span>
+                            <span>${note.tags}</span>
                             <div class="settings">
                                 <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
                                 <ul class="menu">
                                     <li onclick="updateNote('${note._id}', '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
                                     <li onclick="deleteNote('${note._id}')"><i class="uil uil-trash"></i>Delete</li>
-                                </ul>
+                                    <li onclick="archiveNote('${note._id}')"><i class="uil uil-archive"></i>Archive</li>
+                                    </ul>
                             </div>
                         </div>
                     </li>`;
@@ -132,7 +133,7 @@ function showMenu(elem) {
     });
 }
 
-
+// delete Note's by ID
 async function deleteNote(noteId) {
     console.log("dlete call");
     try {
@@ -305,6 +306,7 @@ addBtn.addEventListener('click', async (e) => {
     // Get the selected color and label values
     const noteColor = colorInput.value;
     const noteLabel = labelSelect.value;
+    const noteTags = tagSelect.value;
 
     if (!title || !content) {
         alert('Please provide a title and description for the note.');
@@ -322,7 +324,8 @@ addBtn.addEventListener('click', async (e) => {
             title: title,
             content: content,
             color: noteColor,
-            label: noteLabel,
+            tags: noteTags,
+            labels: noteLabel,
             date: `${month} ${day}, ${year}`
         };
 
@@ -369,9 +372,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("its", notes);
     showNotes();
     const noteForm = document.getElementById('noteForm');
-    
-   
-
     noteForm.addEventListener('submit', async (e) => {
         e.preventDefault(); // Prevent default form submission
 

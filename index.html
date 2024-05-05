@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Registration Form</title>
     <link rel="stylesheet" href="./style/styles.css">
 </head>
+
 <body>
     <form id="signupForm">
         <div class="container">
@@ -22,20 +24,28 @@
 
             <div class="clearfix">
                 <button type="submit" class="btn">Sign Up</button>
-                <button type="button" id="loginButton" class="btn">For Login</button>
+                <button type="loginButton" class="btn">For Login</button>
             </div>
         </div>
     </form>
 
     <script>
+        // script.js
+
+        // Wait for the DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function () {
+            // Find the button element by its id
+            console.log("log");
             const loginButton = document.getElementById('loginButton');
 
+            // Add a click event listener to the button
             loginButton.addEventListener('click', function () {
                 // Redirect to the login page when the button is clicked
-                window.location.href = 'login.html'; // Replace 'login.html' with your actual login page URL
+                window.location.href = 'login.html'; // Replace 'login-page.html' with your actual login page URL
             });
         });
+
+
 
         async function register(event) {
             event.preventDefault(); // Prevent form submission
@@ -56,9 +66,9 @@
                     throw new Error('Registration failed');
                 }
 
-                // Registration successful
+                // Redirect to login page or display success message
                 console.log('Registration successful');
-                window.location.href = 'login.html'; // Redirect to login page
+                window.location.href = 'login.html';
             } catch (error) {
                 console.error('Registration error:', error);
                 // Handle registration error (e.g., display error message)
@@ -68,4 +78,5 @@
         document.getElementById('signupForm').addEventListener('submit', register);
     </script>
 </body>
+
 </html>
