@@ -37,6 +37,15 @@ closeIcon.addEventListener("click", () => {
     document.querySelector("body").style.overflow = "auto";
 });
 
+ // Function to logout the user
+ function logout() {
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+
+    // Redirect the user to the login page
+    window.location.href = 'index.html';
+}
+
 
 async function fetchNotesByUser() {
     try {
