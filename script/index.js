@@ -158,6 +158,10 @@ function showNotes() {
 
 //
 async function archiveNote(noteId) {
+
+    console.log("archived");
+
+
     try {
         const token = localStorage.getItem('token');
         const confirmArchive = confirm("Are you sure you want to archive this note?");
@@ -170,13 +174,14 @@ async function archiveNote(noteId) {
             },
             body: JSON.stringify({ archived: true }) // Set archived to true for the specified note
         });
+        console.log(response);
 
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(`Failed to archive note: ${errorData.message}`);
         }
       // Optionally, you can redirect to the archived page after successful archive
-        window.location.href = './Archived.html';
+        // window.location.href = './Archived.html';
 
     } catch (error) {
         console.error('Error archiving note:', error.message);
@@ -294,17 +299,11 @@ async function deleteNote(noteId) {
 
 
 
-
-
-// Global variables to track the update state
 let updateId = null;
 
-
-// Function to handle edit/update note action
+// Function to populate and display the update form
 function updateNote(noteId, title, filterDesc) {
-    // Populate form fields with existing note data
     updateId = noteId;
-    isUpdate = true;
     titleTag.value = title;
     descTag.value = filterDesc.replaceAll('<br/>', '\r\n'); // Replace <br/> with line breaks
     popupTitle.innerText = "Update a Note";
@@ -314,37 +313,73 @@ function updateNote(noteId, title, filterDesc) {
 
 
 
-// function openUpdatePopup() {
-//     const updatePopup = document.getElementById('updatePopup');
-//     updatePopup.style.display = 'block';
+
+// // Global variables to track the update state
+// let updateId = null;
+
+
+// // Function to handle edit/update note action
+// function updateNote(noteId, title, filterDesc) {
 //     // Populate form fields with existing note data
-//     const title = 'Existing Title'; // Example: Replace with actual existing title
-//     const desc = 'Existing Description'; // Example: Replace with actual existing description
-//     document.getElementById('updateTitle').value = title;
-//     document.getElementById('updateDesc').value = desc;
+//     updateId = noteId;
+//     isUpdate = true;
+//     titleTag.value = title;
+//     descTag.value = filterDesc.replaceAll('<br/>', '\r\n'); // Replace <br/> with line breaks
+//     popupTitle.innerText = "Update a Note";
+//     addBtn.innerText = "Update Note";
+//     addBox.click(); // Open the popup box for editing
 // }
 
-// async function updateNoteOnServer() {
-//     const title = document.getElementById('updateTitle').value.trim();
-//     const desc = document.getElementById('updateDesc').value.trim();
 
-//     // Validate required fields
-//     if (!title) {
-//         alert('Please enter a title.');
-//         return;
-//     }
+async function updateNoteOnServer() {
+    try {
+        const title = titleTag.value.trim();
+        const content = descTag.value.trim();
 
-//     // Prepare updated note data
-//     const updatedNote = {
-//         title: title,
-//         content: desc
-//     };
+        // Validate required fields
+        if (!title) {
+            alert('Please enter a title.');
+            return;
+        }
 
-//     // Simulate API request or actual API request
-//     console.log('Updated note data:', updatedNote);
-//     // Call your API to update the note with updatedNote data
-//     // Example: const response = await fetch('your_api_endpoint', { method: 'PATCH', body: JSON.stringify(updatedNote) });
-// }
+        const updatedNote = {
+            title: title,
+            content: content
+        };
+
+        const token = localStorage.getItem('token');
+
+        const response = await fetch(`https://apsonanotes.onrender.com/notes/${updateId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedNote)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update note');
+        }
+
+        const updatedNoteData = await response.json();
+        console.log('Note updated successfully:', updatedNoteData);
+
+        // Optionally, update UI or perform other actions upon successful update
+        showNotes(); // Refresh the displayed notes after update
+
+        // Close the popup box or perform other UI changes
+        closePopup(); // Call a function to close the popup
+
+    } catch (error) {
+        console.error('Error updating note:', error);
+        alert('Failed to update note. Please try again.');
+    }
+}
+
+
+
+
 
 // Function to update note on the server
 // async function updateNoteOnServer() {
