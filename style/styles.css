@@ -7,7 +7,13 @@ html {
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
   }
-  
+  .heading{
+    margin:3px;
+
+  }
+  .para{
+    margin:3px;
+  }
   .login-box {
     position: absolute;
     top: 50%;
@@ -58,7 +64,7 @@ html {
   .login-box .user-box input:valid ~ label {
     top: -20px;
     left: 0;
-    color: #03e9f4;
+    color: #c8dbdc;
     font-size: 12px;
   }
   
@@ -66,7 +72,7 @@ html {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    color: #03e9f4;
+    color: #c8dbdc;
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
@@ -77,13 +83,13 @@ html {
   }
   
   .login-box a:hover {
-    background: #03e9f4;
+    background: black;
     color: #fff;
     border-radius: 5px;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 100px #03e9f4;
+    box-shadow: 0 0 5px #c8dbdc,
+                0 0 25px #c8dbdc,
+                0 0 50px #c8dbdc,
+                0 0 100px #c8dbdc;
   }
   
   .login-box a span {
@@ -96,7 +102,7 @@ html {
     left: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #03e9f4);
+    background: linear-gradient(90deg, transparent, #c8dbdc);
     animation: btn-anim1 1s linear infinite;
   }
   
@@ -114,7 +120,7 @@ html {
     right: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(180deg, transparent, #03e9f4);
+    background: linear-gradient(180deg, transparent, #c8dbdc);
     animation: btn-anim2 1s linear infinite;
     animation-delay: .25s
   }
@@ -133,7 +139,7 @@ html {
     right: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(270deg, transparent, #03e9f4);
+    background: linear-gradient(270deg, transparent,#c8dbdc);
     animation: btn-anim3 1s linear infinite;
     animation-delay: .5s
   }
@@ -152,7 +158,7 @@ html {
     left: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(360deg, transparent, #03e9f4);
+    background: linear-gradient(360deg, transparent, #c8dbdc);
     animation: btn-anim4 1s linear infinite;
     animation-delay: .75s
   }
@@ -309,17 +315,17 @@ html {
 /* Import Google Font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 *{
-  margin: 0;
+  margin: 5px;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 body{
-  background: #88ABFF;
+  background: black;
 }
 ::selection{
   color: #fff;
-  background: #618cf8;
+  background: #4a4f5c;
 }
 .wrapper{
   margin: 50px;
@@ -533,11 +539,14 @@ form button{
   height: 50px;
   color: #fff;
   outline: none;
-  border: none;
+  border: 2px solid white;
   cursor: pointer;
   font-size: 17px;
   border-radius: 4px;
-  background: #062061;
+  background: black;
+  border-radius:19px;
+  width:170px;
+  margin:5px;
 }
 
 @media (max-width: 660px){
@@ -565,7 +574,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 10px;
   padding: 10px;
-  background-color: #9174d8;
+  background-color: black;
   /* display: flex; */
   justify-content: center;
   align-items: flex-start; /* Align items to the top */

@@ -60,6 +60,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    margin:10px;
 }
 
 input[type="color"] {
@@ -68,6 +69,7 @@ input[type="color"] {
     height: 40px;
     border: none;
     border-radius: 50%;
+    margin:10px;
 }
 
 button {
@@ -78,10 +80,12 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin:5px;
+    background-color: cadetblue;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #085347;
 }
 
 /* Media query for responsiveness */
